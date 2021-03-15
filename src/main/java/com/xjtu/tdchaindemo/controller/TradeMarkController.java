@@ -36,6 +36,15 @@ public class TradeMarkController extends BaseController {
         return "success";
     }
 
+    @PostMapping(value = "/addLoan", consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public String loanController(@RequestParam(name = "value") int value) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("value", value);
+        TDChainConnection.storeMessageOnChain("xjtu_loan", map, "loan");
+        return "success";
+    }
+
     @PostMapping(value = "queryTradeMark", consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public List<String> queryAllTradeMark() {

@@ -45,6 +45,17 @@ public class TradeMarkController extends BaseController {
         return "success";
     }
 
+    @PostMapping(value = "/storeTxHash", consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public String storeTxHash(@RequestParam(name = "txName") String txName,
+                              @RequestParam(name = "hash") String hash) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("txName", txName);
+        map.put("hash", hash);
+        TDChainConnection.storeMessageOnChain("xjtu_loan", map, "loan");
+        return "success";
+    }
+
     @PostMapping(value = "queryTradeMark", consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public List<String> queryAllTradeMark() {
@@ -52,7 +63,6 @@ public class TradeMarkController extends BaseController {
         List<String> res = new ArrayList<>();
         try {
             Result<List<Trans>> result = TDChainConnection.connection.getTransListByType(type);
-            System.out.println(result);
             List<Trans> trans = result.getEntity();
             for (Trans tran : trans) {
                 res.add(tran.getData());
